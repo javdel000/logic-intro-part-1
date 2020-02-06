@@ -1,9 +1,3 @@
-function gameOver () {
-    game.over(false)
-}
-function changeScore () {
-    info.changeScoreBy(1)
-}
 function enemy () {
     meteor = sprites.create(img`
 . . . . . . . . . . . . . . . . 
@@ -35,9 +29,15 @@ function enemy () {
         controller.moveSprite(spaceShip, 100 - 2 * info.score(), 100 - 2 * info.score())
     }
 }
+function gameOver () {
+    game.over(false)
+}
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
     gameOver()
 })
+function changeScore () {
+    info.changeScoreBy(1)
+}
 let extraVelocity = 0
 let meteor: Sprite = null
 let spaceShip: Sprite = null
@@ -59,19 +59,20 @@ spaceShip = sprites.create(img`
 . . . 2 4 2 4 2 4 2 . . . . . . 
 . . . . . . . . . . . . . . . . 
 `, SpriteKind.Player)
-controller.moveSprite(spaceShip)
+controller.moveSprite(spaceShip, 500, 500)
 spaceShip.x = 8
 spaceShip.setFlag(SpriteFlag.StayInScreen, true)
 info.setScore(0)
 enemy()
 changeScore()
-// score
-game.onUpdateInterval(2000, function () {
-    changeScore()
-})
 // Meteorites
 game.onUpdateInterval(2000, function () {
     enemy()
     enemy()
     enemy()
+    enemy()
+})
+// score
+game.onUpdateInterval(200, function () {
+    changeScore()
 })
